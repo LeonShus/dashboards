@@ -1,11 +1,7 @@
 "use client";
 
-import {
-  Box,
-  Stack,
-  useColorScheme,
-} from "@mui/material";
-import { ReactNode } from "react";
+import { Box, Stack, useColorScheme } from "@mui/material";
+import { ReactNode, useEffect } from "react";
 import BedtimeIcon from "@mui/icons-material/Bedtime";
 import Brightness5Icon from "@mui/icons-material/Brightness5";
 import styled from "@emotion/styled";
@@ -20,6 +16,12 @@ const StyledIconWrapper = styled.div`
 
 export const MainLayout = ({ children }: IProps) => {
   const { mode, setMode } = useColorScheme();
+
+  useEffect(() => {
+    if (!mode) {
+      setMode("dark");
+    }
+  }, [mode]);
 
   if (!mode) {
     return null;
