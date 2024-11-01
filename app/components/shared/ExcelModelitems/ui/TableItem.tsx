@@ -1,6 +1,4 @@
-import { IDataFromExcel } from "@/app/types/types";
 import { StyledTable } from "./styles";
-import { mainTableKeys } from "./constants";
 import { ITableConf } from "./types";
 import { useState } from "react";
 import VisibilityIcon from "@mui/icons-material/Visibility";

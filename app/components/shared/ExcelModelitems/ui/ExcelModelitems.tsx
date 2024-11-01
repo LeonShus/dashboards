@@ -1,7 +1,6 @@
 import React from "react";
 import { IDataFromExcel } from "@/app/types/types";
-import { StyledContainer, StyledTable } from "./styles";
-import { Stack } from "@mui/material";
+import { StyledContainer } from "./styles";
 import { TableItem } from "./TableItem";
 import { mainTableKeys, secondaryTableKeys } from "./constants";
 import { ITableConf } from "./types";
