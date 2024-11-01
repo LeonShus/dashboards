@@ -8,6 +8,7 @@ export const StyledTable = styled.table`
   }
 
   tr > th {
+    position: relative;
     padding: 10px;
     text-align: start;
   }
@@ -19,4 +20,16 @@ export const StyledTable = styled.table`
   tr > td {
     padding: 10px;
   }
+
+  .hidden_item{
+    position: absolute;
+    right: 15px;
+    cursor: pointer;
+  }
 `;
+
+
+export const StyledContainer = styled.div`
+    display: flex;
+    gap: 100px;
+`
