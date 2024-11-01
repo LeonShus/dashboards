@@ -1,6 +1,7 @@
 import { Box, Stack } from "@mui/material";
 
 interface IProps {
+  // eslint-disable-next-line
   item: any;
   index: number;
 }
@@ -10,7 +11,7 @@ export const ModelItem = ({ item, index }: IProps) => {
     <Box sx={{ border: "1px solid gray", borderRadius: "3px" }}>
       {index === 0 && <div>{item.Naimenovanie_v_sisteme_istochnike}</div>}
 
-      <Stack direction="row" justifyContent={'space-between'}>
+      <Stack direction="row" justifyContent={"space-between"}>
         <Stack direction="row" spacing={"20px"} border={1} borderColor={"red"}>
           <div>{item.sheet ?? "-"}</div>
           <div>{item.Kod_atributa ?? "-"}</div>

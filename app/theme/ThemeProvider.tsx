@@ -5,7 +5,6 @@ import {
   createTheme,
 } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
-import { ReactNode } from "react";
 
 const darkTheme = createTheme({
   colorSchemes: {

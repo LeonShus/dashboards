@@ -49,7 +49,6 @@ const MenuProps = {
 };
 
 export const Dashboard = () => {
-
   const [file, setFile] = useState<File | null>(null);
   const [excelData, setExcelData] = useState<IDataFromExcel[]>([]);
 
@@ -66,11 +65,11 @@ export const Dashboard = () => {
   };
 
   const readFile = (file: File) => {
-    var reader = new FileReader();
+    const reader = new FileReader();
     reader.onload = function (e) {
       if (e.target) {
-        var data = e.target.result;
-        let readedData = XLSX.read(data, { type: "binary" });
+        const data = e.target.result;
+        const readedData = XLSX.read(data, { type: "binary" });
         const wsname = readedData.SheetNames[0];
         const ws = readedData.Sheets[wsname];
 
@@ -90,6 +89,7 @@ export const Dashboard = () => {
   }, [file]);
 
   const dataBySourceTableName = useMemo(() => {
+    // eslint-disable-next-line
     return excelData.reduce((data: any, item) => {
       if (data[item.source_table_name]) {
         data[item.source_table_name].push(item);
@@ -101,9 +101,7 @@ export const Dashboard = () => {
     }, {});
   }, [excelData]);
 
-
   const options = Object.keys(dataBySourceTableName);
-
 
   return (
     <Paper>
@@ -166,9 +164,14 @@ export const Dashboard = () => {
       </Box>
 
       {Boolean(dashboardItems.length) && (
-        <Stack padding={"20px 50px"} gap={'50px'}>
+        <Stack padding={"20px 50px"} gap={"50px"}>
           {dashboardItems.map((item, index) => {
-            return <ExcelModelitems key={`${index}_${index}`} data={dataBySourceTableName[item]} />;
+            return (
+              <ExcelModelitems
+                key={`${index}_${index}`}
+                data={dataBySourceTableName[item]}
+              />
+            );
           })}
         </Stack>
       )}

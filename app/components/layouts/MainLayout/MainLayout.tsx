@@ -2,9 +2,7 @@
 
 import {
   Box,
-  FormControlLabel,
   Stack,
-  Switch,
   useColorScheme,
 } from "@mui/material";
 import { ReactNode } from "react";

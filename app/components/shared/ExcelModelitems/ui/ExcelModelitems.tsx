@@ -38,6 +38,7 @@ export const ExcelModelitems = ({ data }: IProps) => {
             return (
               <tr key={index}>
                 {mainTableKeys.map((e, index) => {
+                  // eslint-disable-next-line
                   //@ts-ignore
                   return <td key={index}>{item[e] ?? "—"}</td>;
                 })}
@@ -66,6 +67,7 @@ export const ExcelModelitems = ({ data }: IProps) => {
             return (
               <tr key={index}>
                 {secondaryTableKeys.map((e, index) => {
+                  // eslint-disable-next-line
                   //@ts-ignore
                   return <td key={index}>{item[e] ?? "—"}</td>;
                 })}
