@@ -16,10 +16,14 @@
     "@mui/icons-material": "^6.1.6",
     "@mui/material": "^6.1.6",
     "@mui/x-data-grid": "^7.22.0",
+    "add": "^2.0.6",
     "next": "15.0.1",
     "react": "19.0.0-rc-69d4b800-20241021",
+    "react-archer": "^4.4.0",
     "react-dom": "19.0.0-rc-69d4b800-20241021",
-    "xlsx": "^0.18.5"
+    "react-use-draggable-scroll": "^0.4.7",
+    "xlsx": "^0.18.5",
+    "yarn": "^1.22.22"
   },
   "devDependencies": {
     "@types/node": "^20",

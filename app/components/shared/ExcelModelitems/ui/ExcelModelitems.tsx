@@ -4,6 +4,7 @@ import { StyledContainer } from "./styles";
 import { TableItem } from "./TableItem";
 import { mainTableKeys, secondaryTableKeys } from "./constants";
 import { ITableConf } from "./types";
+import { ArcherContainer } from "react-archer";
 
 interface IProps {
   data: IDataFromExcel[];
@@ -25,12 +26,27 @@ export const ExcelModelitems = ({ data }: IProps) => {
   const arr = [firstTableConf, secondTableConf];
 
   return (
-    <StyledContainer>
-      {arr.map((config, index) => (
-        <div key={index}>
-          <TableItem config={config} />
-        </div>
-      ))}
-    </StyledContainer>
+    <ArcherContainer strokeColor="#515151">
+      <StyledContainer>
+        {arr.map((config, index) => (
+          <div key={index}>
+            <TableItem
+              archerConfig={{
+                id: index === 0 ? "root" : `element${index}`,
+                relations: [
+                  {
+                    targetId: `element${index + 1}`,
+                    targetAnchor: index % 2 ? "middle" : "left",
+                    sourceAnchor: "right",
+                    //   style: { strokeDasharray: "5,5" },
+                  },
+                ],
+              }}
+              config={config}
+            />
+          </div>
+        ))}
+      </StyledContainer>
+    </ArcherContainer>
   );
 };

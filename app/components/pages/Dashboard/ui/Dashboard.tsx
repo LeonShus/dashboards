@@ -18,8 +18,9 @@ import React, { useEffect, useMemo, useState } from "react";
 import styled from "@emotion/styled";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import * as XLSX from "xlsx";
-import { IDataFromExcel } from "../types/types";
-import { ExcelModelitems } from "./shared/ExcelModelitems";
+import { IDataFromExcel } from "../../../../types/types";
+import { ExcelModelitems } from "../../../shared/ExcelModelitems";
+import { ScrollContainer } from "@/app/components/shared/ScrollContainer";
 
 // interface IProps {
 //   data?: any[];
@@ -164,13 +165,14 @@ export const Dashboard = () => {
       </Box>
 
       {Boolean(dashboardItems.length) && (
-        <Stack padding={"20px 50px"} gap={"50px"}>
+        <Stack gap={"50px"}>
           {dashboardItems.map((item, index) => {
             return (
-              <ExcelModelitems
-                key={`${index}_${index}`}
-                data={dataBySourceTableName[item]}
-              />
+              <div key={`${index}_${index}`}>
+                <ScrollContainer>
+                  <ExcelModelitems data={dataBySourceTableName[item]} />
+                </ScrollContainer>
+              </div>
             );
           })}
         </Stack>

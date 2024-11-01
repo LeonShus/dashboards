@@ -1,15 +1,23 @@
-import { StyledTable } from "./styles";
+import { StyledBlock, StyledTable } from "./styles";
 import { ITableConf } from "./types";
 import { useState } from "react";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import { ArcherElement } from "react-archer";
+import { RelationType } from "react-archer/lib/types";
+import { useColorScheme } from "@mui/material";
 
 interface IProps {
+  id?: string;
   config: ITableConf;
+  archerConfig: { id: string; relations: RelationType[]};
 }
 
-export const TableItem = ({ config }: IProps) => {
+export const TableItem = ({ id, config, archerConfig }: IProps) => {
   const [hiden, setHiden] = useState(true);
+
+  const { mode,systemMode } = useColorScheme()
+  const currentMode = mode === 'system' ? systemMode : mode
 
   const hidenConfig: ITableConf = {
     ...config,
@@ -23,45 +31,51 @@ export const TableItem = ({ config }: IProps) => {
 
   const currentConfig = hiden ? hidenConfig : config;
 
-  console.log("currentConfig", currentConfig);
 
   return (
-    <StyledTable>
-      <thead>
-        <tr>
-          <th colSpan={currentConfig.header_keys.length} className="table_name">
-            {currentConfig.title}
+    <ArcherElement {...archerConfig}>
+      <StyledBlock mode={currentMode}>
+        <StyledTable mode={currentMode} id={id}>
+          <thead>
+            <tr>
+              <th
+                colSpan={currentConfig.header_keys.length}
+                className="table_name"
+              >
+                {currentConfig.title}
 
-            <span
-              onClick={() => {
-                setHiden((e) => !e);
-              }}
-              className="hidden_item"
-            >
-              {hiden && <VisibilityIcon />}
-              {!hiden && <VisibilityOffIcon />}
-            </span>
-          </th>
-        </tr>
-        <tr>
-          {currentConfig.header_keys.map((item, index) => {
-            return <th key={`${item}_tr_${index}`}>{item}</th>;
-          }, [])}
-        </tr>
-      </thead>
-      <tbody>
-        {currentConfig.rows.map((item, index) => {
-          return (
-            <tr key={index}>
-              {currentConfig.header_keys.map((e, index) => {
-                // eslint-disable-next-line
-                //@ts-ignore
-                return <td key={index}>{item[e] ?? "—"}</td>;
-              })}
+                <span
+                  onClick={() => {
+                    setHiden((e) => !e);
+                  }}
+                  className="hidden_item"
+                >
+                  {hiden && <VisibilityIcon />}
+                  {!hiden && <VisibilityOffIcon />}
+                </span>
+              </th>
             </tr>
-          );
-        }, [])}
-      </tbody>
-    </StyledTable>
+            <tr>
+              {currentConfig.header_keys.map((item, index) => {
+                return <th key={`${item}_tr_${index}`}>{item}</th>;
+              }, [])}
+            </tr>
+          </thead>
+          <tbody>
+            {currentConfig.rows.map((item, index) => {
+              return (
+                <tr key={index}>
+                  {currentConfig.header_keys.map((e, index) => {
+                    // eslint-disable-next-line
+                    //@ts-ignore
+                    return <td key={index}>{item[e] ?? "—"}</td>;
+                  })}
+                </tr>
+              );
+            }, [])}
+          </tbody>
+        </StyledTable>
+      </StyledBlock>
+    </ArcherElement>
   );
 };
