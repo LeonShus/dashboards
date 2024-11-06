@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { IDataFromExcel } from "@/app/types/types";
 import { StyledContainer } from "./styles";
 import { TableItem } from "./TableItem";
@@ -6,29 +6,46 @@ import { mainTableKeys, secondaryTableKeys } from "./constants";
 import { ITableConf } from "./types";
 import { ArcherContainer } from "react-archer";
 
+interface IItem {
+  mainItem: IDataFromExcel[];
+  children?: IItem;
+}
 interface IProps {
-  data: IDataFromExcel[];
+  data: IItem;
 }
 
-export const ExcelModelitems = ({ data }: IProps) => {
+const makeItems = (data: IItem): ITableConf[] => {
   const firstTableConf: ITableConf = {
-    title: data[0].source_table_name,
+    title: data.mainItem[0].source_table_name,
     header_keys: mainTableKeys,
-    rows: data,
+    rows: data.mainItem,
   };
 
   const secondTableConf: ITableConf = {
-    title: data[0].receiver_table_name,
+    title: data.mainItem[0].receiver_table_name,
     header_keys: secondaryTableKeys,
-    rows: data,
+    rows: data.mainItem,
   };
 
-  const arr = [firstTableConf, secondTableConf];
+  let childData: ITableConf[] = [];
+
+  if (data.children) {
+    childData = makeItems(data.children);
+  }
+
+  return [firstTableConf, secondTableConf, ...childData];
+};
+
+export const ExcelModelitems = ({ data }: IProps) => {
+
+  const items = useMemo(() => {
+    return makeItems(data);
+  }, [data]);
 
   return (
-    <ArcherContainer strokeColor="#515151">
+    <ArcherContainer style={{ width: "fit-content" }} strokeColor="#515151">
       <StyledContainer>
-        {arr.map((config, index) => (
+        {items.map((config, index) => (
           <div key={index}>
             <TableItem
               archerConfig={{
@@ -36,7 +53,8 @@ export const ExcelModelitems = ({ data }: IProps) => {
                 relations: [
                   {
                     targetId: `element${index + 1}`,
-                    targetAnchor: index % 2 ? "middle" : "left",
+                    // targetAnchor: index % 2 ? "middle" : "left",
+                    targetAnchor: "left",
                     sourceAnchor: "right",
                     //   style: { strokeDasharray: "5,5" },
                   },

@@ -20,6 +20,17 @@ export const StyledBlock = styled.div<{
 export const StyledTable = styled.table<{
   mode: "light" | "dark" | undefined;
 }>`
+  .table_td_content {
+    display: -webkit-box;
+    max-width: 200px;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    height: 50px;
+  }
+
   thead {
     tr {
       border-bottom: 1px solid ${({ mode }) => getBorderColor(mode)};

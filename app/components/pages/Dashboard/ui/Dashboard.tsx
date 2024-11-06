@@ -90,17 +90,48 @@ export const Dashboard = () => {
   }, [file]);
 
   const dataBySourceTableName = useMemo(() => {
-    // eslint-disable-next-line
-    return excelData.reduce((data: any, item) => {
-      if (data[item.source_table_name]) {
-        data[item.source_table_name].push(item);
-      } else {
-        data[item.source_table_name] = [item];
-      }
+    try {
+      // Сущность с вторыми ключами
+      const secondaryItems: { [key: string]: string } = {};
 
-      return data;
-    }, {});
-  }, [excelData]);
+      // Сущность с Основными ключами
+      // eslint-disable-next-line
+      const mainLine = excelData.reduce((data: any, item) => {
+        // Сначала смотрим все вторые ключи у эдементов и сетаем их в secondaryItems, в значение кладем ключ первого элемента
+        if (!Boolean(secondaryItems[item.receiver_table_name])) {
+          secondaryItems[item.receiver_table_name] = item.source_table_name;
+        }
+
+        // Собираем все элементы под 1 уникальный ключ
+        if (data[item.source_table_name]) {
+          data[item.source_table_name].mainItem.push(item);
+        } else {
+          data[item.source_table_name] = { mainItem: [item] };
+        }
+
+        return data;
+      }, {});
+
+      const secondaryItemKeys = Object.keys(secondaryItems);
+
+      // Если ключ из mainLine есть secondaryItems, то Прокидываем значение как children значение и удаляем ключ из mainLine, так как первым он быть не может
+      secondaryItemKeys.forEach((item) => {
+        if (mainLine[item]) {
+          // secondaryItems[item] = mainLine[item];
+
+          // delete mainLine[item];
+
+          mainLine[secondaryItems[item]].children = mainLine[item];
+
+          delete mainLine[item];
+        }
+      });
+
+      return mainLine;
+    } catch {
+      console.log("Invalid Data");
+    }
+  }, [excelData.length]);
 
   const options = Object.keys(dataBySourceTableName);
 
@@ -165,17 +196,15 @@ export const Dashboard = () => {
       </Box>
 
       {Boolean(dashboardItems.length) && (
-        <Stack gap={"50px"}>
+        <>
           {dashboardItems.map((item, index) => {
             return (
-              <div key={`${index}_${index}`}>
-                <ScrollContainer>
-                  <ExcelModelitems data={dataBySourceTableName[item]} />
-                </ScrollContainer>
-              </div>
+              <ScrollContainer key={`${index}_${index}`}>
+                <ExcelModelitems data={dataBySourceTableName[item]} />
+              </ScrollContainer>
             );
           })}
-        </Stack>
+        </>
       )}
     </Paper>
   );
